@@ -27,7 +27,7 @@
 					<property name="supportedMediaTypes">
 						<list>
 							<!-- Map 타입을 json으로 변환해주는 Jackson Converter -->					
-							<value>application/json;charset=UTF-8</value>
+							<value>application/json; charset=UTF-8</value>
 						</list>
 					</property>
 			</bean>
