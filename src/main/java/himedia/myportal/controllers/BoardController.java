@@ -39,12 +39,12 @@ public class BoardController {
 			Model model,
 			HttpSession session, RedirectAttributes redirectAttributes) {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
+		/*
 		if (authUser == null) {
 			//	홈 화면으로 리다이렉트
 			redirectAttributes.addFlashAttribute("errorMsg", "로그인 되지 않았습니다.");
 			return "redirect:/";
-		}
+		}*/
 		
 		System.out.println("no:" + no);
 		BoardVo boardVo = boardService.getContent(no);
@@ -54,6 +54,7 @@ public class BoardController {
 	}
 	
 	//	작성 폼
+	
 	@GetMapping("/write")
 	public String writeForm(HttpSession session, RedirectAttributes redirectAttributes) {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
@@ -85,11 +86,12 @@ public class BoardController {
 	@GetMapping("/{no}/modify")
 	public String modifyForm(@PathVariable("no") Long no, Model model,
 			HttpSession session, RedirectAttributes redirectAttributes) {
+		/*
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		if (authUser == null) {
 			redirectAttributes.addFlashAttribute("errorMsg", "로그인 되지 않았습니다.");
 			return "redirect:/";
-		}
+		}*/
 		BoardVo vo = boardService.getContent(no);
 		model.addAttribute("vo", vo);
 		return "board/modify";
@@ -110,6 +112,22 @@ public class BoardController {
 		vo.setContent(updatedVo.getContent());
 		
 		boolean success = boardService.update(vo);
+		
+		return "redirect:/board";
+	}
+	
+	//	게시물 삭제
+	@RequestMapping("/{no}/delete")
+	public String deleteAction(@PathVariable("no") Long no, HttpSession session,
+			RedirectAttributes redirectAttributes) {
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		/*
+		if (authUser == null) {
+			redirectAttributes.addFlashAttribute("errorMsg", "로그인이 되지 않았습니다.");
+			return "redirect:/";
+		}*/
+		
+		boardService.delete(no, authUser.getNo());
 		
 		return "redirect:/board";
 	}
