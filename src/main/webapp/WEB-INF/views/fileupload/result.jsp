@@ -8,6 +8,6 @@
 <title>File Upload</title>
 </head>
 <body>
-	<img src="/upload-images/${imageFilename }" />
+	<img src="<c:url value="/upload-images/${imageFilename }" />"/>
 </body>
 </html>

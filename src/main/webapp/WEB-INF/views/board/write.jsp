@@ -25,10 +25,10 @@
 		<form method="post" action="<c:url value="/board/write" />">
 			<table border="1" width="640">
 				<tr>
-					<td colspan="2"><h3>게시판</h3></td>
+					<td colspan="3"><h3>게시판</h3></td>
 				</tr>
 				<tr>
-					<th colspan="2">글쓰기</th>
+					<th colspan="3">글쓰기</th>
 				</tr>
 				<tr>
 					<td>제목</td>
@@ -41,17 +41,23 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
-						<a href="<c:url value="/board" />">취소</a>
-						<input type="submit" value="등록">
-					</td>	
-				</tr>
+					<td colspan="3">
+						<form method="POST" action="<c:url value="/fileupload/upload" />" enctype="multipart/form-data">
+							<label>File</label>
+							<input type="file" name="file1" />
+							<input type="submit" value="upload" />
+							
+							<a href="<c:url value="/board" />">취소</a>
+							<input type="submit" value="등록">
+						</form>
+					</td>
+				</tr>	
 			</table>
 		</form>
 		</div>
 	</div>
-
 	<%@ include file="/WEB-INF/views/includes/footer.jsp" %>
-			
+	
+	</div>	
 </body>
 </html>

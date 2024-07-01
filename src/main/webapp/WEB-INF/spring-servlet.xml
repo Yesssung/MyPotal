@@ -23,15 +23,16 @@
     <mvc:annotation-driven>
     	<!-- MessageConveter 등록 -->
     	<mvc:message-converters>
-	    	<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-					<property name="supportedMediaTypes">
-						<list>
-							<!-- Map 타입을 json으로 변환해주는 Jackson Converter -->					
-							<value>application/json; charset=UTF-8</value>
-						</list>
-					</property>
+    		<bean 
+    			class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<!-- Map 타입을 json으로 변환해주는 Jackson Converter -->
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
 			</bean>
-		</mvc:message-converters>
+    	</mvc:message-converters>
     </mvc:annotation-driven>
     <mvc:default-servlet-handler />
     
@@ -52,22 +53,24 @@
     		<bean class="himedia.myportal.interceptors.MyInterceptor" />
     	</mvc:interceptor>
     	<mvc:interceptor>
-    		<mvc:mapping path="/board/**"/>
+    		<mvc:mapping path="/board/**" />
     		<bean class="himedia.myportal.interceptors.MyInterceptor2" />
     	</mvc:interceptor -->
-    	
-    	
     	<mvc:interceptor>
-    		<mvc:mapping path="/board/**"/>
-    		<!-- 특정 URL 배제할 때 -->
+    		<mvc:mapping path="/board/**" />
+    		<!-- 특정 URL의 배제할 때 -->
     		<mvc:exclude-mapping path="/board" />
     		<mvc:exclude-mapping path="/board/" />
-    		<mvc:exclude-mapping path="/board/list/**"/>
+    		<mvc:exclude-mapping path="/board/list/**" />
     		<bean class="himedia.myportal.interceptors.AuthInterceptor" />
     	</mvc:interceptor>
     </mvc:interceptors>
     
-    <!-- Multipart Resolver -->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
-
+    <!-- MultipartResolver -->
+    <bean id="multipartResolver"
+    	class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
+    	
+    <!-- Resource Mapping -->
+    <mvc:resources mapping="/upload-images/**"
+    	location="file:c:/uploads/" />
 </beans>
