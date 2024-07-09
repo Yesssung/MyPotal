@@ -30,15 +30,16 @@ function checkEmail(event){
 	.catch(error => console.error(error));
 }
 
+
 window.addEventListener("load", event => {
 	document.getElementById("check-email").addEventListener("click", checkEmail);
-	
+	/*	
 	// 가입 폼 Validation
 	document.getElementById("join-form").addEventListener("submit", event => {
 		const frm = event.target;
 		
 		event.preventDefault();
-		
+	
 		// 이름 검증
 		if(frm.name.value.trim().length === 0) {
 			alert(`이름을 입력하세요`);
@@ -76,4 +77,5 @@ window.addEventListener("load", event => {
 		// 전송하기
 		frm.submit();
 	});
+	*/
 });

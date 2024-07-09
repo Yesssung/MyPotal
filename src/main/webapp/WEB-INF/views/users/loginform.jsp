@@ -12,11 +12,8 @@
 <body>
 	<jsp:include page="/WEB-INF/views/includes/header.jsp" />
 	<jsp:include page="/WEB-INF/views/includes/navigation.jsp" />
-	<form id="login-form" 
-		name="loginform" 
-		method="POST" 
-		action="<c:url value="/users/login" />"/>
-		
+	
+	<form id="login-form" name="loginform" method="POST" action="<c:url value="/users/login" />"/>
 		<label class="block-label" for="email">이메일</label> 
 		<input id="email" name="email" type="text" value=""> 
 

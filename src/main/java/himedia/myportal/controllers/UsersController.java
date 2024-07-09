@@ -1,10 +1,14 @@
 package himedia.myportal.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import himedia.myportal.repositories.vo.UserVo;
 import himedia.myportal.services.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @RequestMapping("/users")
 @Controller
@@ -24,15 +29,30 @@ public class UsersController {
 	
 	//	가입 폼
 	@GetMapping({"", "/", "/join"})
-	public String join() {
+	public String join(@ModelAttribute UserVo vo) {
+		vo.setGender("F");
 		return "users/joinform";
 	}
 	
 	//	가입 처리(액션)
 	@PostMapping("/join")
-	public String join(@ModelAttribute UserVo userVo) {
+	public String join(@ModelAttribute @Valid UserVo userVo,
+			BindingResult result,
+			Model model
+			) {
 		System.out.println("회원 가입 폼: " + userVo);
 		
+		//	검증 결과 확인
+		if (result.hasErrors()) {
+			List<ObjectError> list = result.getAllErrors(); //	바인딩 오류 리스트
+			for (ObjectError e: list) {
+				System.err.println("Error:" + e);
+			}
+			model.addAllAttributes(result.getModel());
+			
+//			return "redirect:/user/join";
+			return "users/joinform";
+		}
 		boolean success = userService.join(userVo);
 		if (success) { //	가입 성공
 			//	가입 성공 페이지로 리다이렉트
@@ -51,40 +71,44 @@ public class UsersController {
 		return "users/joinsuccess";
 	}
 	
-	// 로그인 폼 페이지
+	//	로그인 폼 페이지
 	@GetMapping("/login")
 	public String loginForm() {
 		return "users/loginform";
 	}
-
 	
-	// 로그인 액션
+	//	로그인 액션 
 	@PostMapping("/login")
-	public String loginAction(@RequestParam(value="email", required=false, defaultValue="") String email, 
-							  @RequestParam(value="password", required=false, defaultValue="") String password,
-							  HttpSession session ) {
-		System.out.println("email: " + email);
-		System.out.println("password: " + password);
+	public String loginAction(
+			@RequestParam(value="email", 
+						required=false,
+						defaultValue = "") String email,
+			@RequestParam(value="password", 
+						required=false,
+						defaultValue = "") String password,
+			HttpSession session) {
+		System.out.println("email:" + email);
+		System.out.println("password:" + password);
 		
-		if(email.length() == 0 || password.length() == 0) {
-			System.out.println("email 혹은 password가 입력되지 않았습니다.");
+		if (email.length() == 0 || password.length() == 0) {
+			System.out.println("email 혹은 password가 입력되지 않음");
 			return "redirect:/users/login";
-		} 
+		}
 		
-			// email 과 password를 이용해서 사용자 정보를 질의
-			UserVo authUser = userService.getUser(email, password);
-			
-			if(authUser != null) {
-				// 로그인 처리
-				session.setAttribute("authUser", authUser);
-				// 홈페이지로 이동
-				return "redirect:/";
-			} else {
-				return "redirect:/users/login";
-			}
+		//	email과 password 이용, 사용자 정보 질의
+		UserVo authUser = userService.getUser(email, password);
+		
+		if (authUser != null) {
+			//	로그인 처리
+			session.setAttribute("authUser", authUser);
+			//	홈페이지로 이동
+			return "redirect:/";
+		} else {
+			return "redirect:/users/login";
+		}
 	}
-
-	// 로그아웃
+	
+	//	로그아웃
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		session.removeAttribute("authUser");
@@ -93,12 +117,14 @@ public class UsersController {
 		return "redirect:/";
 	}
 	
-	// 중복 이메일 체크(API) -> 응답을 json
-	@ResponseBody		// MessageConverter 사용
+	//	중복 이메일 체크 (API) -> 응답을 json
+	@ResponseBody	//	-> MessageConverter 사용
 	@RequestMapping("/checkEmail")
-	public Object checkEmail(@RequestParam(value="email", required=true, defaultValue="") String email) {
+	public Object checkEmail(@RequestParam(value="email", 
+										required=true,
+										defaultValue="") String email) {
 		UserVo vo = userService.getUser(email);
-		boolean exists = vo != null ? true : false;
+		boolean exists = vo != null ? true: false;
 		
 		System.out.println("Controller UserVo: " + vo);
 		
@@ -108,7 +134,4 @@ public class UsersController {
 		
 		return json;
 	}
-	
-	
-
 }

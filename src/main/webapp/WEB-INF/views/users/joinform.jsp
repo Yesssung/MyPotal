@@ -1,50 +1,95 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>회원 가입폼</title>
-	<script src="<c:url value="/javascript/user.js" />"></script>
-	<link type="text/css" rel="stylesheet" href='<c:url value="/css/users.css" />'/>
+<meta charset="UTF-8">
+<title>My Homepage</title>
+<!-- TODO: 현재 페이지에 적절한 CSS를 임포트하십시오. -->
+<link type="text/css" 
+	rel="stylesheet" 
+	href='<c:url value="/css/users.css" />'/>
+<style>
+.error {
+	color: red;
+	font-weight: bold;
+}
+</style>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/includes/header.jsp" />
-	<jsp:include page="/WEB-INF/views/includes/navigation.jsp" />
+  <div id="container">
+  
+    <!-- header include -->
+    <c:import url="/WEB-INF/views/includes/header.jsp">
+    	<c:param name="param1" value="value1" />
+    	<c:param name="param2" value="value2" />
+    </c:import>
+
+	<!-- navigation include -->
+	<c:import url="/WEB-INF/views/includes/navigation.jsp" />
+    
+	<div id="wrapper">
+      <div id="content">
+			<!-- Content 영역 -->
 	<h1>회원 가입</h1>
 	
-	<form
+	<form:form
+		modelAttribute="userVo"
 		id="join-form"
 		name="registerForm" 
-		action="<c:url value="/users/join" />"
+		action="${pageContext.servletContext.contextPath }/users/join"
 		method="POST"
 		>
-		
+
+
 		<label for="name">이름</label>
-		<input name="name" type="text" placeholder="이름을 입력하십시오"><br>
-	
+		<form:input path="name" placeholder="이름을 입력하십시오" /><br>
+		<form:errors path="name" cssClass="error" /><br>		
+		<!-- 이름 필드 에러 메시지 -->
+		
+		
 		<label for="password">비밀번호</label>
-		<input name="password" type="password" placeholder="비밀번호를 입력하십시오"><br>
-	
+		<!-- input name="password" type="password" placeholder="비밀번호를 입력하십시오"><br -->
+		<form:input path="password" placeholder="비밀번호를 입력하십시오" /><br>
+		<form:errors path="password" cssClass="error"/><br>
+		<!-- 비밀번호 에러 메시지 -->
+		
 		<label for="email">이메일</label>
-		<input type="text" name="email" placeholder="이메일을 입력하십시오." />
-		<input type="button" id="check-email" data-target="<c:url value="/users/checkEmail" />" value="email 중복 체크" />
-		<input type="hidden" name="emailCheck" value="n"/>
-		<br>
+		<!-- input type="text" name="email" placeholder="이메일을 입력하십시오." -->
+		<form:input path="email" placeholder="이메일을 입력하십시오" /><br>
+		<input type="button" id="check-email"
+			data-target="<c:url value="/users/checkEmail" />"
+			value="이메일 중복체크" /><br>
+		<input type="hidden" name="emailCheck" value="n" />
+		<!-- 이메일 필드 에러 메시지 -->
+		<form:errors path="email" cssClass="error" /><br>
 	
 		<label for="gender">성별</label>
-		<input type="radio" name="gender" value="M" checked>남성</radio>
-		<input type="radio" name="gender" value="F">여성</radio><br>
+		<!-- input type="radio" name="gender" value="M" checked>남성</radio -->
+		<form:radiobutton path="gender" value="F" label="여성" />
+		<!-- input type="radio" name="gender" value="F">여성</radio><br -->
+		<form:radiobutton path="gender" value="M" label="남성" /><br>
 		
-		<lable for="agree">약관동의</lable>
+		<label for="agree">약관동의</label>
 		<input type="checkbox" id="agree" name="agree" value="n" />
 		
 		<input type="submit" value="전송"> 
+			
 	
-	</form>
+		
+		
+	</form:form>		
+
+	</div>
+	</div>
 	
-	<%@ include file="/WEB-INF/views/includes/footer.jsp" %>	
+	<!-- footer include -->
+	<%@ include file="/WEB-INF/views/includes/footer.jsp" %>
+	
+	
+  </div>
 </body>
 </html>
