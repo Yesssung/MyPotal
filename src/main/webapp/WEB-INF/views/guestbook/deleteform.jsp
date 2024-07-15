@@ -18,15 +18,18 @@
     <div>
     	<c:import url="/WEB-INF/views/includes/navigation.jsp" />
   	</div>
-	<form method="post"
-		action="<c:url value="/guestbook/delete" />">
+  	
+  	
+	<form method="post" action="<c:url value="/guestbook/delete" />">
 		<input type='hidden' name="no" value="${no }"> 
-		<label
-			for="password">비밀번호</label>
+		<label for="password">비밀번호</label>
 		<input type="password" name="password">
+		
+		
 		<input type="submit" value="확인"><br> 
-		<a href="<c:url value="/guestbook" />">목록
-			보기</a>
+		<a href="<c:url value="/guestbook" />">목록 보기</a>
 	</form>
+	
+	
 </body>
 </html>

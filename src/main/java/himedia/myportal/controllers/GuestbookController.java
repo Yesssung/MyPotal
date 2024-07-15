@@ -49,7 +49,6 @@ public class GuestbookController {
 	}
 	
 	// Guestbook Delete(POST) -> 실제 게시물 삭제
-	// /guestbook/delete (POST)
 	@PostMapping("/delete")
 	public String delete(@ModelAttribute GuestbookVo vo) {
 		boolean success = guestbookService.deleteMessage(vo);
