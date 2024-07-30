@@ -69,7 +69,7 @@
 			</table>
 			</c:forEach>
       </div>
-	</div>
+
 	
 	<!-- footer include -->
 	<%@ include file="/WEB-INF/views/includes/footer.jsp" %>

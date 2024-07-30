@@ -8,7 +8,7 @@
 	<select id="selectAll" resultType="GuestbookVo">
 	SELECT no, name, password, content, regdate as regDate
 	FROM guestbook
-	ORDER BY regdate DESC
+	ORDER BY regDate DESC
 	</select>
 	
 	
